@@ -1,8 +1,14 @@
 from datetime import date
 
-dn = date(2023, 5, 12)
+
+# задание константы с датой для использования ее в формуле 
+DN = date(2023, 5, 12) 
+# объявление списка, в котором будем хранить данные
 data = []
 
+
+# Считываем данные из файла в список. Получаем список словарей data
+# [{streams: int, artist_name: str, track_name: str, date: date}, ...]
 with open('songs.csv') as f:
     headers = f.readline().strip().split(";")
     headers[0] = 'streams'
@@ -16,15 +22,15 @@ with open('songs.csv') as f:
         data.append(d)
 
 
-
+# заполняем нуленые прослушевания по формуле из задания
 for row in data:
     if row['streams'] == 0:
-        td = dn - row['date']
+        td = DN - row['date']
         row['streams'] = round(abs(td.days) / 
                           (len(row['artist_name']) + len(row['track_name'])) * 10000)
 
 
-
+# записываем исправленные данные в файл songs_new.txt
 with open('songs_new.csv', 'w') as f:
     s = ';'.join(headers) + '\n'
     
